@@ -16,7 +16,9 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
+
     afterConnection();
+
 });
 
 function afterConnection() {
@@ -29,14 +31,47 @@ function afterConnection() {
 
             console.log(
 
-                "\n" + res[i].item_id + ": "  +res[i].product_name +" " +
-                  "|Department: " + res[i].department_name + "| " +
-                 "|Price: " + res[i].price +
-                 "| "+ "|Left in Stock: " + res[i].stock_quantity+ "|"
-            );
+                "\n" + res[i].item_id + ": " + res[i].product_name + " " +
+                "|Department: " + res[i].department_name + "| " +
+                "|Price: " + res[i].price +
+                "| " + "|Left in Stock: " + res[i].stock_quantity + "|"
 
+            );
         }
+        console.log("--------------------------------------------------------------------------------" + "\n" + "");
+        inquire
+            .prompt([{
+                    name: "choice",
+                    message: "Please enter the number of the product to which you would like to purchase",
+                    type: "input",
+                    validate: function (ans) {
+                        if (isNaN(ans) === true) {
+                            console.log("\nPlease choose a numerical value.")
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }, {
+                    name: "quantity",
+                    message: "Please enter the quantity of your desired purchase",
+                    type: "input",
+                    validate: function (ans) {
+                        if (isNaN(ans) === true) {
+                            console.log("\nPlease choose a numerical value.")
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+
+
+            ])
+            .then(function (answer) {
+
+            });
 
         connection.end();
-    });
-}
+    })
+};
